@@ -73,12 +73,41 @@ function email_notification() {
 		'has_archive'           => false,
 		'exclude_from_search'   => true,
 		'publicly_queryable'    => false,
-		'capability_type'       => 'post',
+		'capability_type'       => 'email_notification',
+		'map_meta_cap'        	=> true,
+		'capability'			=> array(
+			'publish_posts'     => 'manage_email_notifications',
+		)
 	);
 	register_post_type( 'email_notification', $args );
 
 }
 add_action( 'init', 'email_notification' );
+
+function wpstx_add_role_caps() {
+
+	// Add the roles you'd like to administer the custom post types
+	$roles = array('administrator');
+	
+	// Loop through each role and assign capabilities
+	foreach($roles as $the_role) { 
+		$role = get_role($the_role);
+		$role->add_cap( 'read' );
+		$role->add_cap( 'manage_email_notifications' );
+		$role->add_cap( 'read_email_notification');
+		$role->add_cap( 'read_private_email_notifications' );
+		$role->add_cap( 'edit_email_notification' );
+		$role->add_cap( 'edit_email_notifications' );
+		$role->add_cap( 'edit_others_email_notifications' );
+		$role->add_cap( 'edit_published_email_notifications' );
+		$role->add_cap( 'publish_email_notifications' );
+		$role->add_cap( 'delete_others_email_notifications' );
+		$role->add_cap( 'delete_private_email_notifications' );
+		$role->add_cap( 'delete_published_email_notifications' );
+
+	}
+}
+add_action('admin_init','wpstx_add_role_caps');
 
 /**
  * Change the button that says "Publish" to "Send" on the post type
