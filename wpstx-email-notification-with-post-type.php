@@ -73,10 +73,10 @@ function email_notification() {
 		'has_archive'           => false,
 		'exclude_from_search'   => true,
 		'publicly_queryable'    => false,
-		'capability_type'       => 'email_notification',
+		'capability_type'       => 'email_notification', // our own cap type
 		'map_meta_cap'        	=> true,
 		'capability'			=> array(
-			'publish_posts'     => 'manage_email_notifications',
+			'publish_posts'     => 'manage_email_notifications', // the capability to add to the role
 		)
 	);
 	register_post_type( 'email_notification', $args );
@@ -84,6 +84,9 @@ function email_notification() {
 }
 add_action( 'init', 'email_notification' );
 
+/**
+ * Add the capabilities to use this email system to the administrator only
+ */
 function wpstx_add_role_caps() {
 
 	// Add the roles you'd like to administer the custom post types
